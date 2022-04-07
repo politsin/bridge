@@ -1,4 +1,4 @@
 #!/bin/bash
 
 cd /opt/apps/bridge
-docker build . -t bridge
+docker build . -t synst/bridge
