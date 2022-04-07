@@ -26,7 +26,7 @@ services:
       - MQTT_WILL_CONTENT=offline
       - MQTT_WILL_QOS=1
       - MQTT_WILL_RETAIN=TRUE
-    volumes:
-      - "./console/console.php:/opt/console/console.php"
-      - "./console/bridge.php:/opt/console/bridge.php"
-      - "./console/.env:/opt/console/.env"
+    # volumes:
+    #   - "./console/console.php:/opt/console/console.php"
+    #   - "./console/bridge.php:/opt/console/bridge.php"
+    #   - "./console/.env:/opt/console/.env"
