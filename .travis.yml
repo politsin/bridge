@@ -19,5 +19,6 @@ script:
 after_script:
   - docker tag bridge $REPO:latest
   - docker tag bridge $REPO:$VERSION
+  - docker tag bridge $REPO:$VERSION.$TRAVIS_BUILD_NUMBER
   - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
   - docker push $REPO
