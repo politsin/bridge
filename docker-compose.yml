@@ -1,7 +1,7 @@
 version: "3"
 services:
   bridge:
-    image: bridge
+    image: bridge:latest
     container_name: bridge
     hostname: bridge
     restart: always
