@@ -41,7 +41,7 @@ $config = [
     'ssl' => (bool) $_ENV['MQTT_SSL'] ?? TRUE,
     'will' => [
       'topic' => str_replace("{name}", $name, $_ENV['MQTT_WILL_TOPIC']),
-      'content' => $_ENV['MQTT_WILL_TOPIC'] ?? offline,
+      'content' => $_ENV['MQTT_WILL_CONTENT'] ?? offline,
       'qos' => (int) $_ENV['MQTT_WILL_QOS'] ?? 1,
       'retain' => (bool) $_ENV['MQTT_WILL_RETAIN'] ?? TRUE,
     ],
