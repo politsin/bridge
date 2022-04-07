@@ -22,6 +22,7 @@ services:
       - MQTT_PASS=
       - MQTT_SSL=TRUE
       - MQTT_ONLINE_TOPIC=$$bridge/{name}/availability
+      - MQTT_ONLINE_CONTENT=online
       - MQTT_WILL_TOPIC=$$bridge/{name}/availability
       - MQTT_WILL_CONTENT=offline
       - MQTT_WILL_QOS=1

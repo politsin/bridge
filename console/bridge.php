@@ -41,14 +41,17 @@ $config = [
     'ssl' => (bool) $_ENV['MQTT_SSL'] ?? TRUE,
     'will' => [
       'topic' => str_replace("{name}", $name, $_ENV['MQTT_WILL_TOPIC']),
-      'content' => $_ENV['MQTT_WILL_CONTENT'] ?? offline,
+      'content' => $_ENV['MQTT_WILL_CONTENT'] ?? 'offline',
       'qos' => (int) $_ENV['MQTT_WILL_QOS'] ?? 1,
       'retain' => (bool) $_ENV['MQTT_WILL_RETAIN'] ?? TRUE,
     ],
   ],
   'mqtt' => [
     'host' => $_ENV['MQTT_HOST'],
-    'onine' => str_replace("{name}", $name, $_ENV['MQTT_WILL_TOPIC']),
+    'online' => [
+      'topic' => str_replace("{name}", $name, $_ENV['MQTT_WILL_TOPIC']),
+      'content' => $_ENV['MQTT_WILL_CONTENT'] ?? 'online',
+    ],
     'subscribe' => [
       '$devices/*/events/*' => 1,
       '$devices/*/state/*' => 1,
@@ -83,7 +86,7 @@ $worker->onWorkerStart = function () use ($writeApi, $config, $parser) {
   $mqtt = new Mqtt($config['mqtt']['host'], $config['mqtt_options']);
   $mqtt->onConnect = function (Mqtt $mqtt) use ($config) {
     $mqtt->subscribe($config['mqtt']['subscribe']);
-    $mqtt->publish($config['mqtt_options']['will']['topic'], 'online');
+    $mqtt->publish($config['mqtt']['online']['topic'], $config['mqtt']['online']['content']);
   };
   $mqtt->onMessage = function ($topic, $content) use ($writeApi, $parser) {
     if ($info = $parser($topic)) {
