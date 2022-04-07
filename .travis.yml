@@ -14,7 +14,7 @@ before_script:
   - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
 
 script:
-  - build.sh
+  - ./build.sh
 
 after_script:
   - docker tag bridge $REPO:latest
