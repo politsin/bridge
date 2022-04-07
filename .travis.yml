@@ -22,3 +22,5 @@ after_script:
   - docker tag synst/bridge $REPO:$VERSION.$TRAVIS_BUILD_NUMBER
   - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
   - docker push $REPO
+  - docker push $REPO:$VERSION
+  - docker push $REPO:$VERSION.$TRAVIS_BUILD_NUMBER
