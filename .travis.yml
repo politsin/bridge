@@ -1,0 +1,21 @@
+language: ruby
+
+services:
+  - docker
+
+env:
+  global:
+    - VERSION=0.1
+    - REPO=synst/bridge
+
+before_script:
+  - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+
+script:
+  - ./build.sh
+
+after_script:
+  - docker tag bridge $REPO:latest
+  - docker tag bridge $REPO:$VERSION
+  - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin
+  - docker push $REPO
