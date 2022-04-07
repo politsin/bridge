@@ -1,0 +1,32 @@
+version: "3"
+services:
+  bridge:
+    image: bridge
+    container_name: bridge
+    hostname: bridge
+    restart: always
+    logging:
+      options:
+        max-file: "3"
+        max-size: "50m"
+    environment:
+      - NAME=s1
+      - TIMEZONE=Europe/Moscow
+      - INFLUX_HOST=
+      - INFLUX_TOKEN=
+      - INFLUX_BUCKET=
+      - INFLUX_ORG=
+      - INFLUX_TIMEOUT=
+      - MQTT_HOST=
+      - MQTT_USER=
+      - MQTT_PASS=
+      - MQTT_SSL=
+      - MQTT_ONLINE_TOPIC=\$bridge/{name}/availability
+      - MQTT_WILL_TOPIC=\$bridge/{name}/availability
+      - MQTT_WILL_CONTENT=offline
+      - MQTT_WILL_QOS=1
+      - MQTT_WILL_RETAIN=TRUE
+    volumes:
+      - "./console/console.php:/opt/console/console.php"
+      - "./console/bridge.php:/opt/console/bridge.php"
+      - "./console/.env:/opt/console/.env"
