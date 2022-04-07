@@ -21,7 +21,7 @@ use InfluxDB2\WriteApi;
 
 // RUN: `php ~/html/modules/custom/iiot/bridge/bridge.php start` -d to demonize/.
 // Input "php /var/www//html/modules/custom/iiot/bridge/bridge.php stop" to stop.
-$name = $_ENV['NAME'] ?? 'docker-bridge';
+$name = $_ENV['NAME'] ?? 'php-bridge';
 $topic_will = $_ENV['MQTT_WILL_TOPIC'] ?? "\$bridge/{$name}/availability";
 $topic_online = $_ENV['MQTT_ONLINE_TOPIC'] ?? "\$bridge/{$name}/availability";
 $config = [
