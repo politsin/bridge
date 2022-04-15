@@ -1,6 +1,6 @@
 # bridge
 
-Конфигурация в `docker-compose`:
+Конфигурация в `docker-compose`
 
 ## Обязательные параметры
 ### `INFLUX_HOST`
