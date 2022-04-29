@@ -50,6 +50,7 @@
 ## `MQTT_ONLINE_TOPIC`
 * По умолчанию `$bridge/{name}/availability`
 * Если указывать в композ-файле, то экранировать так: `$$bridge/{name}/availability`
+* Если указывать в `.env`-файле, то экранировать так: `\$bridge/{name}/availability`
 * `{name}` заменяется на значение из `NAME`
 
 ## `MQTT_ONLINE_CONTENT`
@@ -58,6 +59,7 @@
 ## `MQTT_WILL_TOPIC`
 * По умолчанию `$bridge/{name}/availability`
 * Если указывать в композ-файле, то экранировать так: `$$bridge/{name}/availability`
+* Если указывать в `.env`-файле, то экранировать так: `\$bridge/{name}/availability`
 * `{name}` заменяется на значение из `NAME`
 
 ## `MQTT_WILL_QOS`
