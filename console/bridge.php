@@ -10,8 +10,6 @@ use Symfony\Component\Dotenv\Dotenv;
 $dotenv = new Dotenv();
 $dotenv->load(__DIR__ . '/.env');
 
-print_r($_ENV);
-
 use Workerman\Worker;
 use Workerman\Mqtt\Client as Mqtt;
 use InfluxDB2\Client as Influx;
