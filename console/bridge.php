@@ -60,6 +60,14 @@ $config = [
       '$monitoring/json' => 1,
     ],
   ],
+  'redis' => [
+    'enable' => (bool) $_ENV['REDIS_ENABLE'] ?? FALSE,
+    'host' => $_ENV['REDIS_HOST'] ?? "",
+    'port' => (int) $_ENV['REDIS_PORT'] ?? 6379,
+    'user' => $_ENV['REDIS_USER'] ?? "",
+    'pass' => $_ENV['REDIS_PASS'] ?? "",
+    'ttl' => (int) $_ENV['REDIS_TTL'] ?? 0,
+  ]
 ];
 
 $parser = function ($topic) : array | NULL {
@@ -81,14 +89,27 @@ $parser = function ($topic) : array | NULL {
 $worker = new Worker();
 $influx = new Influx($config['influx']);
 $writeApi = $influx->createWriteApi();
+$redis = new \Redis();
+if ($config['redis']['enable']) {
+  try {
+    $redis->connect($config['redis']['host'], $config['redis']['port']);
+    $redis->auth($config['redis']['pass']);
+    if (!$redis->ping()) {
+      $config['redis']['enable'] = FALSE;
+    }
+  }
+  catch (\RedisException $e) {
+    $config['redis']['enable'] = FALSE;
+  }
+}
 
-$worker->onWorkerStart = function () use ($writeApi, $config, $parser) {
+$worker->onWorkerStart = function () use ($writeApi, $redis, $config, $parser) {
   $mqtt = new Mqtt($config['mqtt']['host'], $config['mqtt_options']);
   $mqtt->onConnect = function (Mqtt $mqtt) use ($config) {
     $mqtt->subscribe($config['mqtt']['subscribe']);
     $mqtt->publish($config['mqtt']['online']['topic'], $config['mqtt']['online']['content']);
   };
-  $mqtt->onMessage = function ($topic, $content) use ($writeApi, $parser) {
+  $mqtt->onMessage = function ($topic, $content) use ($writeApi, $redis, $config, $parser) {
     if ($info = $parser($topic)) {
       if ($info['type'] == 'events') {
         $measurment = floatval($content);
@@ -98,6 +119,15 @@ $worker->onWorkerStart = function () use ($writeApi, $config, $parser) {
           ->addTag('bridge', 's1')
           ->time(microtime(TRUE));
         $writeApi->write($point);
+      }
+      if ($config['redis']['enable'] && $info['type'] == 'state') {
+        $state = mb_substr($content, 0, 128);
+        if ($config['redis']['ttl'] > 0) {
+          $redis->set($topic, ['nx', 'ex' => $config['redis']['ttl']]);
+        }
+        else {
+          $redis->set($topic, $state);
+        }
       }
     }
   };

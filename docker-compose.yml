@@ -27,6 +27,12 @@ services:
       - MQTT_WILL_CONTENT=offline
       - MQTT_WILL_QOS=1
       - MQTT_WILL_RETAIN=TRUE
+      - REDIS_ENABLE=
+      - REDIS_HOST=
+      - REDIS_PORT=
+      - REDIS_USER=
+      - REDIS_PASS=
+      - REDIS_TTL=
     # volumes:
     #   - "./console/console.php:/opt/console/console.php"
     #   - "./console/bridge.php:/opt/console/bridge.php"
