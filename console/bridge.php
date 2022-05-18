@@ -123,7 +123,7 @@ $worker->onWorkerStart = function () use ($writeApi, $redis, $config, $parser) {
       if ($config['redis']['enable'] && $info['type'] == 'state') {
         $state = mb_substr($content, 0, 128);
         if ($config['redis']['ttl'] > 0) {
-          $redis->set($topic, ['nx', 'ex' => $config['redis']['ttl']]);
+          $redis->set($topic, $state, ['nx', 'ex' => $config['redis']['ttl']]);
         }
         else {
           $redis->set($topic, $state);
